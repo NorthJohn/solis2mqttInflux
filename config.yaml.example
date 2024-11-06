@@ -1,15 +1,30 @@
-device: /dev/ttyUSB0
-slave_address: 1
-poll_interval: 60
+###
+#
+#  these are the local settings
+
+
+poll_interval: 300
 poll_interval_if_off: 300
 inverter:
-    name: solis2mqtt
+    location: somewhere
+    name: solis
+    units: 2    # assume slave addresses start at 1
     manufacturer: Ginlong Technologies
-    model:
+    model: 40k
+
+device: /dev/ttyUSB0   #sudo gpasswd -a dietpi dialout
+
 mqtt:
-    url: hassio.local
-    port: 8883
-    use_ssl: true
-    validate_cert: true
-    user: whoami
-    passwd: secret
+    host:    localhost
+    use_ssl: false
+    port:    1883
+    username: whoami
+    password: secret
+    topic:    "solar"
+
+influx:
+  url:  http://localhost:8086   # does have to be URL !
+  token: mytoken
+  org:  mysolar
+  bucket: solar   # also called database
+
