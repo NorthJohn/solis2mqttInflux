@@ -13,3 +13,7 @@ mqtt:
     validate_cert: true
     user:
     passwd:
+
+## added by JA
+
+influx:
