@@ -14,8 +14,8 @@ class DiscoverMsgSensor():
                      "device": {"name": "",
                                 "model": "",
                                 "manufacturer": "",
-                                "identifiers": "solis2mqtt",
-                                "sw_version": "solis2mqtt "
+                                "identifiers": "solis",
+                                "sw_version": "solis"
                                 }
                      }
 
@@ -47,8 +47,8 @@ class DiscoverMsgNumber():
                      "device": {"name": "",
                                 "model": "",
                                 "manufacturer": "",
-                                "identifiers": "solis2mqtt",
-                                "sw_version": "solis2mqtt"
+                                "identifiers": "solis",
+                                "sw_version": "solis"
                                 }
                      }
 
@@ -79,8 +79,8 @@ class DiscoverMsgSwitch():
                      "device": {"name": "",
                                 "model": "",
                                 "manufacturer": "",
-                                "identifiers": "solis2mqtt",
-                                "sw_version": "solis2mqtt"
+                                "identifiers": "solis",
+                                "sw_version": "solis"
                                 }
                      }
 
