@@ -223,24 +223,6 @@
     state_class:
     device_class: string
 
-- name: power_limitation
-  description: Power limitation
-  unit: "%"
-  active: true
-  modbus:
-    register: 3051
-    read_type: register
-    function_code: 3
-    write_function_code: 6
-    number_of_decimals: 2
-    signed: false
-  homeassistant:
-    device: number
-    min: 0
-    max: 100
-    step: 0.01
-    state_class:
-    device_class: power
 
 #- name: on_off
  # description: On/Off
