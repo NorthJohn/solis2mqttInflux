@@ -2,10 +2,11 @@ import minimalmodbus
 from threading import Lock
 
 class Inverter(minimalmodbus.Instrument):
-    def __init__(self, name, device, slave_address):
+    def __init__(self, name, slave_address, device):
         super().__init__(device, slave_address)
         self.serial.baudrate = 9600
         self.serial.timeout = 0.35
+        self.lock = Lock()
         self.offline = False
         self.loopCount = 0
         self.name = name
