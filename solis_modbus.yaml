@@ -1,3 +1,8 @@
+#
+# This file was used at Tall Acre in 2023
+# Works for Solis S5-GC(25-40)K
+#
+
 - name: active_power
   description: Active Power
   unit: W
@@ -6,11 +11,12 @@
     register: 3004
     read_type: long
     function_code: 4
-    signed: false
+    signed: true
   homeassistant:
     device: sensor
     state_class: measurement
     device_class: power
+
 - name: inverter_temp
   description: Inverter temperature
   unit: "°C"
@@ -25,6 +31,55 @@
     device: sensor
     state_class: measurement
     device_class: temperature
+
+# frequency currently not supported by home-assistant, topic is in discussion
+- name: grid_frequency
+  description: Grid Frequency
+  unit: Hz
+  active: true
+  modbus:
+    register: 3042
+    read_type: register
+    function_code: 4
+    number_of_decimals: 2
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: frequency
+
+#- name: inverter_status
+#  description: Inverter Staus
+#  unit:
+#  active: true
+#  modbus:
+#    register: 3043
+#    read_type: register
+#    function_code: 4
+#    number_of_decimals: 0
+#    signed: false
+#  homeassistant:
+#    device: sensor
+#    state_class: measurement
+#    device_class:
+
+
+- name: IGBT_temp
+  description: AC NTC (IGBT)Module Temperature
+  unit: "°C"
+  active: true
+  modbus:
+    register: 3093
+    read_type: register
+    function_code: 4
+    number_of_decimals: 1
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: temperature
+
+
 - name: total_power
   description: Inverter total power generation
   unit: kWh
@@ -38,6 +93,7 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
+
 - name: generation_today
   description: Energy generated today
   unit: kWh
@@ -52,6 +108,7 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
+
 - name: generation_yesterday
   description: Energy generated yesterday
   unit: kWh
@@ -66,19 +123,21 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
-- name: total_dc_output_power
-  description: Total DC output power
-  unit: W
-  active: true
-  modbus:
-    register: 3006
-    read_type: long
-    function_code: 4
-    signed: false
-  homeassistant:
-    device: sensor
-    state_class: measurement
-    device_class: power
+
+#- name: total_dc_output_power
+#  description: Total DC output power
+#  unit: W
+#  active: true
+#    modbus:
+#    register: 3006
+#    read_type: long
+#    function_code: 4
+#    signed: false
+#  homeassistant:
+#    device: sensor
+#    state_class: measurement
+#    device_class: power
+
 - name: energy_this_month
   description: Energy generated this month
   unit: kWh
@@ -92,6 +151,7 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
+
 - name: generation_last_month
   description: Energy generated last month
   unit: kWh
@@ -105,6 +165,7 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
+
 - name: generation_this_year
   description: Energy generated this year
   unit: kWh
@@ -118,6 +179,7 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
+
 - name: generation_last_year
   description: Energy generated last year
   unit: kWh
@@ -131,21 +193,8 @@
     device: sensor
     state_class: total_increasing
     device_class: energy
-# frequency currently not supported by home-assistant, topic is in discussion
-#- name: grid_frequency
-#  description: Grid Frequency
-#  unit: Hz
-#  active: true
-#  modbus:
-#    register: 3042
-#    read_type: register
-#    function_code: 4
-#    number_of_decimals: 2
-#    signed: false
-#  homeassistant:
-#    device: sensor
-#    state_class: measurement
-#    device_class: frequency
+
+
 - name: system_datetime
   description: System DateTime
   unit:
@@ -157,7 +206,8 @@
   homeassistant:
     device: sensor
     state_class:
-    device_class: timestamp
+    device_class: string
+
 - name: serial_number
   description: Serial Number
   unit:
@@ -171,7 +221,8 @@
   homeassistant:
     device: sensor
     state_class:
-    device_class:
+    device_class: string
+
 - name: power_limitation
   description: Power limitation
   unit: "%"
@@ -189,21 +240,378 @@
     max: 100
     step: 0.01
     state_class:
-    device_class:
-- name: on_off
-  description: On/Off
-  unit:
+    device_class: power
+
+#- name: on_off
+ # description: On/Off
+ # unit:
+  #active: true
+  #modbus:
+  #  register: 3006
+  #  read_type: register
+   # function_code: 3
+   # write_function_code: 6
+   # number_of_decimals: 0
+   # signed: false
+ # homeassistant:
+ #   device: switch
+   # payload_on: 190
+   # payload_off: 222
+    #state_class:
+    #device_class:
+
+#######################
+
+- name: MPPT1_V
+  description: volts
+  unit: V
   active: true
   modbus:
-    register: 3006
+    register: 3499
     read_type: register
-    function_code: 3
-    write_function_code: 6
-    number_of_decimals: 0
+    number_of_decimals: 1
+    function_code: 4
     signed: false
   homeassistant:
-    device: switch
-    payload_on: 190
-    payload_off: 222
-    state_class:
-    device_class:
+    device: sensor
+    state_class: measurement
+    device_class: voltage
+    group : MPPT
+    index : 1
+
+- name: MPPT2_V
+  description: volts
+  unit: V
+  active: true
+  modbus:
+    register: 3500
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: voltage
+    group : MPPT
+    index : 2
+
+- name: MPPT3_V
+  description: volts
+  unit: V
+  active: true
+  modbus:
+    register: 3501
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: voltage
+    group : MPPT
+    index : 3
+
+
+- name: MPPT4_V
+  description: volts
+  unit: V
+  active: true
+  modbus:
+    register: 3502
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: voltage
+    group : MPPT
+    index : 4
+
+#######################
+
+- name: MPPT1_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3429
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : MPPT
+    index : 1
+
+- name: MPPT2_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3430
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : MPPT
+    index : 2
+
+- name: MPPT3_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3431
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : MPPT
+    index : 3
+
+- name: MPPT4_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3432
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: false
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : MPPT
+    index : 4
+
+#######################
+
+- name: PV1_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3300
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 1
+
+- name: PV2_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3301
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 2
+
+- name: PV3_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3302
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 3
+
+
+- name: PV4_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3303
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 4
+
+- name: PV5_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3304
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 5
+
+- name: PV6_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3305
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 6
+
+- name: PV7_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3306
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 7
+
+- name: PV8_I
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3307
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 8
+
+
+#######################
+
+
+- name: PV1_V
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3320
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 1
+
+- name: PV2_V
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3321
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 2
+
+- name: PV3_V
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3322
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 3
+
+
+- name: PV4_V
+  description: current
+  unit: A
+  active: true
+  modbus:
+    register: 3323
+    read_type: register
+    number_of_decimals: 1
+    function_code: 4
+    signed: true
+  homeassistant:
+    device: sensor
+    state_class: measurement
+    device_class: current
+    group : PV
+    index : 4
+
+
+###################
