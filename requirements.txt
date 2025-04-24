@@ -2,3 +2,4 @@ minimalmodbus
 pyyaml
 paho-mqtt
 python-daemon
+influxdb_client
