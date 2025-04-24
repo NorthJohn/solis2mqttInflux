@@ -221,7 +221,7 @@ def poll(is_daemon, args):
     with Influx(logging) as influx :   # instantiating logger
         sol = Solis2Mqtt(logging, args)
         sol.main(influx)
-        del sol
+        del sol                        # have to close down influx cleanly to save all data
 
 
 def signal_term_handler(sigNum, frame):
