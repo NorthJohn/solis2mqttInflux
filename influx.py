@@ -32,7 +32,7 @@ class Influx :
 
     def __enter__(self):
         self.clientInfluxWrite = self.clientInflux.write_api( write_options=WriteOptions(batch_size=self.batch_size, flush_interval=self.flush_interval))
-        self.logger.debug("influxDB instantiated");
+        self.logger.info("influxDB instantiated");
         return self
 
 
@@ -124,4 +124,4 @@ class Influx :
 
     def __exit__(self, *args):
         self.logger.info(f"closing influx");
-        self.clientInfluxWrite.close()
+        self.clientInfluxWrite.close()      # have to close down influx cleanly to save all data
