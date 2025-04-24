@@ -11,23 +11,16 @@ class Mqtt(mqtt_client.Client):
             self.tls_set()
         if cfg['use_ssl'] and not cfg['validate_cert']:
             self.tls_insecure_set(True)
-        self.on_connect = self._on_connect_callback
         self.on_publish = self._on_publish_callback
+        self.logging.info(f"Connecting to MQTT...{cfg['host']}")
         self.connect(cfg['host'], cfg['port'])
-
-    def __del__(self):
-        self.logging.info("Disconnecting from MQTT...")
-        self.disconnect()
-
-    def _on_connect_callback(self, client, userdata, flags, rc):
-        print(f"MQTT broker connected with result code {rc}")
-        if rc :
-            raise Exception('Could not connect to broker, flags {} rc {}'.format(flags, rc));
-
-        self.logging.info("Connected to MQTT...")
-        self.loop_start()
+        self.logging.info("Connected  to MQTT")
         if len(self.subscriptions):
             self.subscribe(self.subscriptions)
+
+    def __del__(self):
+        self.logging.info("Disconnecting from MQTT (if connected)...")
+        self.disconnect()
 
     def _on_publish_callback(self,client, userdata, mid):
         #logging.debug("on_publish, mid {}".format(mid))
